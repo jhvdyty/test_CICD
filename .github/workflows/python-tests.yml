@@ -1,15 +1,25 @@
-stages:
-  - build
-  - test
-  - deploy
+# .github/workflows/dotnet-build.yml
+name: Build and Test
 
-before_script:
-  - $PSVersionTable.PSVersion
-  - dotnet --version
-  - nuget help | select-string Version
-  
-dummy job on windows:
-  script:
-    - echo ok
-  tags:
-    - windows
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check PowerShell version
+        run: $PSVersionTable.PSVersion
+        shell: pwsh
+
+      - name: Check .NET version
+        run: dotnet --version
+
+      - name: Check NuGet version
+        run: nuget help | Select-String Version
+        shell: pwsh
+
+      - name: Dummy Step
+        run: echo ok
